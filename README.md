@@ -36,35 +36,45 @@ To enhance retrieval accuracy and optimize response generation, several preproce
    - Special characters, excessive whitespace, and formatting inconsistencies are removed.
    - Speaker labels and interruptions are handled to improve readability.
 
-3. **Tokenization & Chunking**
-   - Transcripts are split into **manageable text blocks** to enhance search efficiency.
-   - **Semantic chunking** ensures that responses are retrieved in context.
-
-4. **Metadata Structuring**
+3. **Metadata Structuring**
    - Industry classifications and company tickers are normalized.
    - Date formats are standardized for consistency.
 
 ---
 
 ## 🛠️ Methodology
-This project employs **retrieval-augmented generation (RAG)** in combination with **GPT-4 Turbo**, ensuring users receive **highly relevant and context-aware responses** when querying earnings call transcripts. The workflow consists of:
+This project employs **retrieval-augmented generation (RAG)** to ensure users receive **the most relevant answers** when querying earnings call transcripts. The workflow consists of:
 
-### 1️⃣ **Real-Time Transcript Retrieval**
+### 1️⃣ **Transcript Retrieval**
    - The application **queries API Ninja** based on user-selected parameters.
-   - If a transcript is available, it is **retrieved, processed, and stored temporarily** for querying.
+   - If a transcript is available, it is **retrieved, processed, and stored**.
+   - The API is used to retrieve transcripts for a number of companies from different industries
 
-### 2️⃣ **Query Matching & Context Extraction**
-   - Users input financial-related questions.
-   - The system **searches the retrieved transcripts** for relevant excerpts.
-   - If an exact answer is found, it is **sourced directly from the transcript**.
+### 2️⃣ **Transcript document chunking and creating vector embeddings
+   - Each of the transcripts are chunked into 3000 character long chunks with an overlap of 500 characters using LangChain's RecursiveCharacterTextSplitter.
+   - Using OpenAI's embedding model **text-embedding-ada-002**, vector embeddings are created for each chunk.
 
-### 3️⃣ **AI Enhancement via GPT-4 Turbo**
-   - If no direct transcript match is found, **GPT-4 Turbo generates an AI-powered response**.
-   - The AI model cross-references existing financial data for consistency.
+### 3️⃣ **Store vector embeddings in vector database
+   - The implementation uses **ChromaDB** as the Vector database.
+   - Vector embeddings for each chunk are stored in ChromaDB along with metadata relating to the chunk such as Ticker, Year and Quarter.
 
-### 4️⃣ **Evaluation & Response Scoring**
-   - Every response is **scored for accuracy** using predefined metrics.
-   - If an AI-generated response is used, a **confidence score** is assigned based on transcript alignment.
+### 4️⃣ **Query Matching & Context Extraction**
+   - Users input the ticker, year and quarter along with their question on a transcript.
+   - A vector embedding for the question is created using the same embedding model **text-embedding-ada-002**.
+   - A similarity search is performed on the vector database to find the top three chunks that are most similar to the question.  The chunks are filtered to relate only to the ticker, year, and quarter entered by the user using the metadata stored with the chunks.
+
+###  **Create a prompt and pass to the LLM**
+   - The user question along with the three document chunks retrieved from the vector database are used to create a prompt to be passed into an LLM.  At this stage, the LLM being used is OpenAI's GPT-4 model.
+   - The LLM should try to answer the question based on the document chunks that appear in the prompt.  
+   - If the LLM cannot answer the question from the document chunks, the LLM should repsond that it is unable to answer the question based on the document chunks provided.   
+
+###  **LLM as a Judge - Evaluation & Response Scoring**
+   - In order to evaluate if the LLM has answered the question appropriately, an approach called **LLM as a Judge** is employed.  This approach is the only one available as we do not have human generated responses to compare against.
+   - A prompt for evaluation is created that includes the user question, the answer that was generated along with the three document chunks. 
+   - The prompt is passed to a more powerful model LLM.  In this case, the LLM being used to evaulate how well the question was answered is GPT-4 Turbo. It is considered good practice to use a more powerful LLM when evaluating the answer generated previously.
+   
+
+   
 
 ---
 
