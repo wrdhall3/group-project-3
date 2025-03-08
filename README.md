@@ -124,6 +124,8 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 
 ---
 
+## 📌 Visual Representation of the Workflow
+
 ```mermaid
 graph TD;
     %% User Query and Data Retrieval
@@ -132,7 +134,7 @@ graph TD;
 
     %% Text Processing and Embeddings
     C -->|Split into 3000-character Chunks| D[Text Chunking];
-    D -->|Generate Vector Representations| E[Create Embeddings (OpenAI Model)];
+    D -->|Generate Vector Representations| E[Create Embeddings with OpenAI];
     E -->|Store Embeddings and Metadata| F[Save to ChromaDB];
 
     %% Query Matching and Context Extraction
@@ -140,11 +142,11 @@ graph TD;
     G -->|Retrieve Relevant Chunks| H[Search in ChromaDB];
 
     %% AI Processing and Response Generation
-    H -->|Send to AI Model| I[LLM Processing (GPT-4)];
+    H -->|Send to AI Model| I[LLM Processing with GPT-4];
     I -->|Generate Answer from Retrieved Chunks| J[AI Response Generation];
 
     %% Evaluation & Final Output
-    J -->|Evaluate Faithfulness and Relevance| K[LLM Review (GPT-4 Turbo)];
+    J -->|Evaluate Faithfulness and Relevance| K[LLM Review with GPT-4 Turbo];
     K -->|Deliver AI Response| L[Final Answer to User];
 
     %% Styling Enhancements
@@ -154,8 +156,6 @@ graph TD;
     class A,G,H,K,L process;
     class B,C,D,E,F database;
     class I,J ai;
-
-
 
 ---
 
