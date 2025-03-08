@@ -3,7 +3,7 @@
 # Earnings Call Analyzer  
 ### AI-Powered Insights for Earnings Transcripts  
 
-<img src="images/Gradio_UI_Intro.png" alt="Earnings Call Analyzer UI" style="width:80%; height:auto;">
+<img src="images/rag_llm_integration.png" alt="RAG LLM Integration" style="width:80%; height:auto;">
 
 </div>
 
