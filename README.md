@@ -127,25 +127,25 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 ```mermaid
 graph TD;
     %% User Query and Data Retrieval
-    A[User Query] -->|Request Sent| B[API Ninja Fetches Transcripts];
-    B -->|Retrieves Data Based on Parameters| C[Transcript Processing];
+    A[User Query] -->|Request Sent| B[API Fetch: Earnings Call Transcripts];
+    B -->|Retrieve Data Based on Parameters| C[Transcript Processing];
 
     %% Text Processing and Embeddings
-    C -->|Splitting into 3,000-character chunks| D[Text Chunking];
-    D -->|Creating Vector Representations| E[Generate Embeddings (OpenAI text-embedding-ada-002)];
-    E -->|Store Embeddings & Metadata| F[Store in ChromaDB];
+    C -->|Split into 3000-character Chunks| D[Text Chunking];
+    D -->|Generate Vector Representations| E[Create Embeddings (OpenAI Model)];
+    E -->|Store Embeddings and Metadata| F[Save to ChromaDB];
 
     %% Query Matching and Context Extraction
     A -->|Convert Query to Embedding| G[Query Matching];
-    G -->|Retrieve Relevant Chunks| H[Retrieve Context from ChromaDB];
+    G -->|Retrieve Relevant Chunks| H[Search in ChromaDB];
 
     %% AI Processing and Response Generation
-    H -->|Pass Context to Model| I[LLM Processing (GPT-4)];
-    I -->|Generate Answer Using Retrieved Chunks| J[AI Response Generation];
+    H -->|Send to AI Model| I[LLM Processing (GPT-4)];
+    I -->|Generate Answer from Retrieved Chunks| J[AI Response Generation];
 
     %% Evaluation & Final Output
-    J -->|Evaluate for Faithfulness & Relevance| K[LLM as a Judge (GPT-4 Turbo)];
-    K -->|Final AI Response| L[User Receives Answer];
+    J -->|Evaluate Faithfulness and Relevance| K[LLM Review (GPT-4 Turbo)];
+    K -->|Deliver AI Response| L[Final Answer to User];
 
     %% Styling Enhancements
     classDef process fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -154,7 +154,9 @@ graph TD;
     class A,G,H,K,L process;
     class B,C,D,E,F database;
     class I,J ai;
-```
+
+
+
 ---
 
 ## 🔬 Model Evaluation
