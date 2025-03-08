@@ -9,80 +9,168 @@
 
 ---
 
-## Project Description
-Insightful Consulting Group (ICG) is expanding into investment management and has been tasked with developing an AI prototype to streamline earnings report analysis. During earnings season, research analysts face an overwhelming influx of reports, making it difficult to extract valuable insights efficiently. This project enables users to query earnings call transcripts and receive instant, AI-driven responses to improve decision-making and efficiency.
+## 📌 Project Description
+Insightful Consulting Group (ICG) is expanding into investment management and has been tasked with developing an AI prototype to streamline the analysis of earnings reports. During earnings season, research analysts face an overwhelming influx of reports, making it difficult to extract valuable insights efficiently. This project aims to enhance decision-making and productivity by enabling users to query earnings call transcripts and receive instant AI-driven responses.
+
+---
 
 ## 📊 Dataset
-The dataset consists of **earnings call transcripts from 2024**, retrieved dynamically from **API Ninja's financial transcript API** and formatted for **natural language processing (NLP)**. The dataset has been structured to allow for efficient retrieval of relevant financial insights. Each transcript contains:
+The dataset consists of **earnings call transcripts from 2024**, which are dynamically retrieved from **[API Ninja's Financial Transcript API](https://api-ninjas.com/)** and preprocessed for **natural language processing (NLP)**. The dataset has been structured to allow efficient extraction of financial insights. Each transcript includes the following key attributes:
 
-- **Industry** - The sector in which the company operates.
-- **Ticker Symbol** - The stock ticker used to identify the company.
-- **Quarter** - The financial quarter in which the earnings call took place (Q1, Q2, Q3, Q4).
-- **Year** - The fiscal year of the earnings call.
-- **Transcript Text** - The full text of the earnings call, including statements from executives and analysts.
-- **Date of Transcript** - The specific date when the earnings call occurred.
+- **Industry** – The sector in which the company operates.
+- **Ticker Symbol** – The stock ticker uniquely identifying the company.
+- **Quarter** – The financial quarter in which the earnings call took place (Q1, Q2, Q3, or Q4).
+- **Year** – The fiscal year corresponding to the earnings call.
+- **Transcript Text** – The full text of the earnings call, including statements made by executives and analysts.
+- **Date of Transcript** – The specific date when the earnings call occurred.
 
-### 📁 Source
-Earnings call transcripts are **retrieved in real-time** via **[API Ninja](https://api-ninjas.com/)**, which provides financial data, including company earnings reports. This allows the system to **fetch the latest transcripts dynamically**, ensuring up-to-date insights.
+By structuring the dataset in this manner, the AI system can efficiently retrieve and analyze relevant information, helping analysts gain insights quickly and accurately.
+
+### 📁 Data Source
+Earnings call transcripts are **retrieved in real-time** using **API Ninja**, a financial data provider that offers access to company earnings transcripts. This integration enables the system to **dynamically fetch the latest transcripts** for informed decision-making.
 
 ### 🔄 Data Preprocessing
-To enhance retrieval accuracy and optimize response generation, several preprocessing steps are applied:
+To enhance retrieval accuracy and optimize response generation, the AI system applies several preprocessing steps to earnings call transcripts:
 
 1. **API Data Extraction**
-   - API requests are structured to fetch transcripts based on selected industry, company ticker, year, and quarter.
-   - The API response is parsed and converted into a structured format.
+   - API requests are structured to retrieve transcripts based on parameters such as industry, company ticker, fiscal year, and financial quarter.
+   - The API response is parsed and converted into a structured format to facilitate efficient processing and querying.
 
 2. **Text Cleaning & Standardization**
-   - Special characters, excessive whitespace, and formatting inconsistencies are removed.
-   - Speaker labels and interruptions are handled to improve readability.
+   - Special characters, excessive whitespace, and formatting inconsistencies are removed to improve text quality.
+   - Speaker labels (e.g., "CEO", "Analyst") and interruptions are properly handled to maintain readability and coherence.
 
-3. **Tokenization & Chunking**
-   - Transcripts are split into **manageable text blocks** to enhance search efficiency.
-   - **Semantic chunking** ensures that responses are retrieved in context.
+3. **Metadata Structuring**
+   - Industry classifications and company tickers are standardized to ensure uniformity across transcripts.
+   - Date formats are normalized to maintain consistency and facilitate accurate time-based analysis.
 
-4. **Metadata Structuring**
-   - Industry classifications and company tickers are normalized.
-   - Date formats are standardized for consistency.
+By implementing these preprocessing steps, the AI system ensures that earnings call transcripts are clean, structured, and ready for efficient analysis.
 
 ---
 
-## 🛠️ Methodology
-This project employs **retrieval-augmented generation (RAG)** in combination with **GPT-4 Turbo**, ensuring users receive **highly relevant and context-aware responses** when querying earnings call transcripts. The workflow consists of:
+## 🛠️ Code Structure
 
-### 1️⃣ **Real-Time Transcript Retrieval**
-   - The application **queries API Ninja** based on user-selected parameters.
-   - If a transcript is available, it is **retrieved, processed, and stored temporarily** for querying.
+The system consists of the following core functions:
 
-### 2️⃣ **Query Matching & Context Extraction**
-   - Users input financial-related questions.
-   - The system **searches the retrieved transcripts** for relevant excerpts.
-   - If an exact answer is found, it is **sourced directly from the transcript**.
+1. **`generate_embedding()`**
+   - **Purpose**: Creates vector embeddings for a given text chunk.
+   - **How it works**: Converts text into numerical representations using a model like OpenAI's `text-embedding-ada-002`. These embeddings facilitate comparison and retrieval of relevant information.
 
-### 3️⃣ **AI Enhancement via GPT-4 Turbo**
-   - If no direct transcript match is found, **GPT-4 Turbo generates an AI-powered response**.
-   - The AI model cross-references existing financial data for consistency.
+2. **`chunk_text()`**
+   - **Purpose**: Splits long transcripts into smaller, manageable chunks.
+   - **How it works**: Breaks the text into 3,000-character chunks with a 500-character overlap, ensuring no loss of context.
 
-### 4️⃣ **Evaluation & Response Scoring**
-   - Every response is **scored for accuracy** using predefined metrics.
-   - If an AI-generated response is used, a **confidence score** is assigned based on transcript alignment.
+3. **`store_embeddings()`**
+   - **Purpose**: Manages both chunking and storing of text embeddings.
+   - **How it works**:
+     - Calls `chunk_text()` to split the text into smaller chunks.
+     - Uses `generate_embedding()` to create vector embeddings for each chunk.
+     - Stores embeddings in ChromaDB, along with metadata (e.g., company ticker, year, quarter) for efficient retrieval.
+
+4. **`query_rag()`**
+   - **Purpose**: Performs retrieval-augmented generation (RAG) by retrieving relevant document chunks.
+   - **How it works**:
+     - Calls `generate_embedding()` to create an embedding for the user's query.
+     - Searches for similar chunks in the vector database.
+     - Uses retrieved chunks to formulate a contextually accurate response.
+
+5. **`evaluate_response()`**
+   - **Purpose**: Assesses the accuracy and relevance of AI-generated responses.
+   - **How it works**: Passes the user's question, AI response, and relevant document chunks to a stronger model (e.g., GPT-4 Turbo) for evaluation.
+
+6. **`query_and_display()`**
+   - **Purpose**: Processes the user query and displays the generated response.
+   - **How it works**: Sends the query through the RAG pipeline (`query_rag()`) and presents the AI-generated response in a user-friendly format.
+
+7. **`update_ticker_dropdown()`**
+   - **Purpose**: Ensures that the list of available company tickers is up to date.
+   - **How it works**: Fetches and updates the list of available companies for querying.
+
+The workflow ensures that transcripts are chunked, embedded, and stored efficiently, enabling rapid and accurate retrieval when users submit queries.
 
 ---
 
-## 📏 Evaluation
-The model is assessed based on **three primary evaluation metrics** to ensure reliability:
+## 🏗️ Methodology
 
-### ✅ **Faithfulness**
-- Ensures that responses accurately reflect the earnings call transcripts.
-- Minimizes hallucination risks in AI-generated content.
+### 🔎 What is Retrieval-Augmented Generation (RAG)?
+RAG enhances AI-generated responses by first retrieving relevant text from a database and then using that text to generate precise answers. This approach ensures responses are grounded in actual data rather than relying solely on the AI's built-in knowledge.
 
-### 🎯 **Relevance**
-- Measures how closely the response aligns with the **user’s query**.
-- Prioritizes **direct transcript excerpts** over AI-generated answers.
+### 🔄 System Workflow
 
-### 🤖 **AI Confidence Score**
-- AI responses are **ranked based on reliability**, factoring in:
-  - **Transcript matching percentage**
-  - **Financial data consistency**
-  - **Linguistic and contextual accuracy**
+1. **Transcript Retrieval**
+   - API Ninja fetches transcripts based on user-selected parameters (company ticker, industry, year, quarter).
+   - Retrieved transcripts are processed and stored.
 
-Future updates will incorporate **user feedback loops** and **machine learning fine-tuning** to enhance response accuracy.
+2. **Text Chunking & Vector Embeddings**
+   - Transcripts are split into 3,000-character chunks with a 500-character overlap using LangChain’s `RecursiveCharacterTextSplitter`.
+   - Each chunk is converted into a vector embedding using OpenAI's `text-embedding-ada-002`.
+
+3. **Storing Vector Embeddings**
+   - Embeddings are stored in **ChromaDB** along with metadata (ticker, year, quarter).
+   - ChromaDB enables efficient similarity searches.
+
+4. **Query Matching & Context Extraction**
+   - The system converts the user’s question into a vector embedding.
+   - A similarity search retrieves the most relevant transcript chunks.
+   - Retrieved chunks are used to generate AI responses.
+
+5. **LLM Processing**
+   - The AI (e.g., GPT-4) generates a response based on retrieved transcript data.
+   - If insufficient information is available, the AI states its limitations instead of fabricating an answer.
+
+6. **Response Evaluation**
+   - The response is reviewed using an LLM-based evaluation system (`LLM as a Judge`).
+   - GPT-4 Turbo assesses faithfulness, relevance, and accuracy.
+
+---
+
+## 🔬 Model Evaluation
+
+The AI system is assessed based on:
+
+### ✅ Faithfulness
+- Ensures that responses are factually accurate and based on transcript data.
+- Reduces AI hallucinations.
+
+### 🎯 Relevance
+- Measures how well responses align with the user's query.
+- Prioritizes direct excerpts from transcripts.
+
+### 📈 AI Confidence Score
+- Evaluates the response's reliability based on:
+  - Transcript matching percentage.
+  - Financial data consistency.
+  - Linguistic and contextual accuracy.
+
+---
+
+## 🚀 Future Enhancements
+
+1. **User Feedback Loops**
+   - Allow users to rate responses for continuous improvement.
+
+2. **Machine Learning Fine-Tuning**
+   - Adapt the AI model to better understand financial terminology.
+
+3. **Multilingual Support**
+   - Expand language support for global accessibility.
+
+4. **Real-Time Transcript Updates**
+   - Automate the retrieval of the latest earnings call data.
+
+5. **Advanced NLP Models**
+   - Improve contextual understanding with cutting-edge NLP architectures.
+
+---
+
+## 📷 Visualizations
+
+### Gradio Interface:
+![Gradio UI](images/Gradio_UI_Intro.png)
+
+---
+
+## 📜 License
+
+**MIT License**  
+This project is licensed under the MIT License. See the `LICENSE` file for details.
