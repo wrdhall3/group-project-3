@@ -124,6 +124,40 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 
 ---
 
+```mermaid
+graph TD;
+    %% User Query and Data Retrieval
+    A[🔍 User Query] -->|Request Sent| B[🌐 API Ninja Fetches Transcripts];
+    B -->|Retrieves Data Based on Parameters| C[📄 Transcript Processing];
+
+    %% Text Processing and Embeddings
+    C -->|Splitting into 3,000-character chunks| D[📝 Text Chunking];
+    D -->|Creating Vector Representations| E[📊 Generate Embeddings (OpenAI text-embedding-ada-002)];
+    E -->|Store Embeddings & Metadata| F[💾 Store in ChromaDB];
+
+    %% Query Matching and Context Extraction
+    A -->|Convert Query to Embedding| G[🔎 Query Matching];
+    G -->|Retrieve Relevant Chunks| H[📂 Retrieve Context from ChromaDB];
+
+    %% AI Processing and Response Generation
+    H -->|Pass Context to Model| I[🤖 LLM Processing (GPT-4)];
+    I -->|Generate Answer Using Retrieved Chunks| J[📝 AI Response Generation];
+
+    %% Evaluation & Final Output
+    J -->|Evaluate for Faithfulness & Relevance| K[📊 LLM as a Judge (GPT-4 Turbo)];
+    K -->|Final AI Response| L[✅ User Receives Answer];
+
+    %% Styling Enhancements
+    classDef process fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef database fill:#dfe6e9,stroke:#333,stroke-width:1px;
+    classDef ai fill:#fdcb6e,stroke:#333,stroke-width:1px;
+    class A,G,H,K,L process;
+    class B,C,D,E,F database;
+    class I,J ai;
+```
+
+---
+
 ## 🔬 Model Evaluation
 
 The AI system is assessed based on:
