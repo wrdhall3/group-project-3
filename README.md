@@ -1,6 +1,6 @@
 <div align="center">
 
-# Earnings Call Analyzer  
+# Earnings Call Transcript Analyzer  
 ### AI-Powered Insights for Earnings Transcripts  
 
 <img src="images/rag_llm_integration.png" alt="RAG LLM Integration" style="width:80%; height:auto;">
@@ -10,7 +10,7 @@
 ---
 
 ## Project Description
-Insightful Consulting Group (ICG) is expanding into investment management and has been tasked with developing an AI prototype to streamline the analysis of earnings reports. During earnings season, research analysts face an overwhelming influx of reports, making it difficult to extract valuable insights efficiently. This project enhances decision-making and productivity by enabling users to query earnings call transcripts and receive AI-driven responses in real time.
+Insightful Consulting Group (ICG) is expanding into investment management and has been tasked with developing an AI prototype to streamline the analysis of earnings call transcripts. During earnings season, research analysts face an overwhelming influx of company earnings releases, making it difficult to extract valuable insights efficiently. This project enhances decision-making and productivity by enabling users to query earnings call transcripts and real-time AI-driven responses.
 
 ---
 
@@ -18,8 +18,8 @@ Insightful Consulting Group (ICG) is expanding into investment management and ha
 The dataset consists of **earnings call transcripts from 2024**, dynamically retrieved from **[API Ninja's Financial Transcript API](https://api-ninjas.com/)** and preprocessed for **natural language processing (NLP)**. Each transcript includes the following attributes:
 
 - **Industry** – The sector in which the company operates.
-- **Ticker Symbol** – The stock ticker uniquely identifying the company.
-- **Quarter** – The financial quarter in which the earnings call took place (Q1, Q2, Q3, or Q4).
+- **Ticker Symbol** – The stock ticker uniquely identifies the company.
+- **Quarter** – The financial quarter in which the earnings call occurred (Q1, Q2, Q3, or Q4).
 - **Year** – The fiscal year corresponding to the earnings call.
 - **Transcript Text** – The full text of the earnings call, including statements made by executives and analysts.
 - **Date of Transcript** – The specific date when the earnings call occurred.
@@ -27,7 +27,7 @@ The dataset consists of **earnings call transcripts from 2024**, dynamically ret
 This structured dataset allows efficient retrieval and analysis, enabling analysts to gain insights quickly and accurately.
 
 ### Data Source
-Earnings call transcripts are retrieved in real time using **API Ninja**, a financial data provider offering access to company earnings transcripts. This integration enables the system to dynamically fetch the latest transcripts for informed decision-making.
+Earnings call transcripts are retrieved in real-time using **API Ninja**, a financial data provider offering access to company earnings transcripts. This integration enables the system to dynamically fetch the latest transcripts for informed decision-making.
 
 ### Data Preprocessing
 To enhance retrieval accuracy and optimize response generation, the AI system applies several preprocessing steps:
@@ -54,7 +54,7 @@ The system consists of the following core functions:
 
 1. **`generate_embedding()`**
    - **Purpose**: Creates vector embeddings for a given text chunk.
-   - **How it works**: Converts text into numerical representations using a model like OpenAI's `text-embedding-ada-002`. These embeddings facilitate comparison and retrieval of relevant information.
+   - **How it works**: Converts text into numerical representations using a model like OpenAI's `text-embedding-ada-002`. These embeddings facilitate the comparison and retrieval of relevant information.
 
 2. **`chunk_text()`**
    - **Purpose**: Splits long transcripts into smaller, manageable chunks.
@@ -83,7 +83,7 @@ The system consists of the following core functions:
    - **How it works**: Sends the query through the RAG pipeline (`query_rag()`) and presents the AI-generated response in a user-friendly format.
 
 7. **`update_ticker_dropdown()`**
-   - **Purpose**: Ensures that the list of available company tickers is up to date.
+   - **Purpose**: Ensures that the list of available company tickers is up-to-date.
    - **How it works**: Fetches and updates the list of available companies for querying.
 
 This workflow ensures that transcripts are chunked, embedded, and stored efficiently, enabling rapid and accurate retrieval when users submit queries.
@@ -116,7 +116,7 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 
 5. **LLM Processing**
    - The AI (e.g., GPT-4) generates a response based on retrieved transcript data.
-   - If insufficient information is available, the AI states its limitations instead of fabricating an answer.
+   - If insufficient information is available, the AI states it cannot answer the question based on the document chunks provided.
 
 6. **Response Evaluation**
    - The response is reviewed using an LLM-based evaluation system (`LLM as a Judge`).
@@ -153,7 +153,27 @@ graph TD;
     class B,C,D,E,F database;
     class I,J ai;
 ```
+New Test
+New Text
+New Text
 
+## Model Optimization
+
+To improve the model, we optimized on three key areas:
+
+1. **Embedding Model Selection**  
+   - Tested OpenAI’s **text-embedding-ada-002** (smaller, faster) vs. **text-embedding-3-large** (larger, more powerful).  
+   - **Result:** No significant improvement with the larger model.  The smaller model performed just as well.  
+
+2. **Chunk Size & Overlap Adjustments**  
+   - Started with **1,000-character chunks** (200 character overlap).  
+   - Switched to **3,000-character chunks** (500 character overlap), which preserved more context and improved response quality.  
+
+3. **Upgrading the Vector Database**  
+   - Moved from **FAISS** (efficient but lacked metadata filtering) to **ChromaDB**, which allows filtering by **Ticker, Year, and Quarter**.  
+   - **Result:** More precise retrieval of relevant transcript sections, improving accuracy.  
+
+---
 ## Model Evaluation
 
 The AI system is assessed based on the following key metrics:
