@@ -248,14 +248,23 @@ This project features an **interactive Gradio-based user interface**, enabling u
 ---
 
 ## Test Cases and Results  
-To evaluate the effectiveness of the model, we tested four key question types:  
+To evaluate the effectiveness of the model, we tested five key question types:  
 
 | **Question Type**   | **Actual Question**                            | **Results**                                                                 | **Human Assessment (Pass/Fail)** | **Tool's Quality Score** |
 |---------------------|-----------------------------------------------|-----------------------------------------------------------------------------|----------------------------------|--------------------------|
-| **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   |  Pass                          | Faithfulness: 5, Relevance: 5, Overall: 5 |
-| **Qualitative**     | What did the CEO say about revenue growth?    | Provided a well-structured summary of the CEO’s discussion on revenue.      |  Pass                          | Faithfulness: 5, Relevance: 5, Overall: 5 |
-| **Inference**       | What was the main reason for revenue growth?  | AI correctly inferred reasoning based on CEO statements and financial data. |  Pass                          | Faithfulness: 4, Relevance: 5, Overall: 4.5 |
-| **Off-Topic**       | What is the special for today?                | System responded that no relevant data exists in the document.              |  Fail (question unrelated)     | Faithfulness: 5, Relevance: 1, Overall: 3 |
+| **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Quantitative**    | How did the company perform last quarter?     | Model returned the latest financial report instead of the previous quarter. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Quantitative**    | How did the company perform this quarter?     | Model correctly retrieved the latest financial report.                      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Qualitative**     | What did the CEO say about revenue growth?    | Provided a well-structured summary of the CEO’s discussion on revenue.      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Inference**       | What was the main reason for revenue growth?  | AI correctly inferred reasoning based on CEO statements and financial data. | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Off-Topic**       | What is the dinner special for today?         | System correctly stated that no relevant data exists in the document. However, it incorrectly assigned a high relevance score. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+
+---
+
+### **Key Adjustments:**
+- The **off-topic question was marked as a fail** because, while the system correctly identified the lack of relevant information, **it incorrectly assigned a relevance score of 5.**
+- The **"last quarter" question remains a fail** due to misidentification of the correct timeframe.
+- Other questions **remain unchanged**, as they were answered correctly.
 
 ---
 
