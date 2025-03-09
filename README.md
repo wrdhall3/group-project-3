@@ -253,11 +253,11 @@ To evaluate the effectiveness of the model, we tested five key question types:
 | **Question Type**   | **Actual Question**                            | **Results**                                                                 | **Human Assessment (Pass/Fail)** | **Tool's Quality Score** |
 |---------------------|-----------------------------------------------|-----------------------------------------------------------------------------|----------------------------------|--------------------------|
 | **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
-| **Quantitative**    | How did the company perform last quarter?     | Model returned the latest financial report instead of the previous quarter. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Quantitative**    | How did the company perform last quarter?     | Model returned the latest financial report instead of the previous quarter, failing to distinguish between periods. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
 | **Quantitative**    | How did the company perform this quarter?     | Model correctly retrieved the latest financial report.                      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
 | **Qualitative**     | What did the CEO say about revenue growth?    | Provided a well-structured summary of the CEO’s discussion on revenue.      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
 | **Inference**       | What was the main reason for revenue growth?  | AI correctly inferred reasoning based on CEO statements and financial data. | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
-| **Off-Topic**       | What is the dinner special for today?         | System correctly stated that no relevant data exists in the document. However, it incorrectly assigned a high relevance score. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Off-Topic**       | What is the dinner special for today?         | System correctly stated that no relevant data exists in the document. However, it incorrectly assigned a high relevance score, which does not align with the actual query's intent. | Fail                             | Faithfulness: 5, Relevance: 1, Overall: 3 |
 
 ---
 
@@ -274,9 +274,13 @@ To evaluate the effectiveness of the model, we tested five key question types:
 
 <img src="images/gradio_test2_a.png" alt="Off-Topic Query Example" style="width:80%; height:auto;">
 
+---
+
 - The **Analysis Result** correctly stated that no information was found, but this **was not useful for the user**.  
 
 <img src="images/gradio_test2_b.png" alt="Off-Topic Analysis Result" style="width:80%; height:auto;">
+
+---
 
 - The **Quality Score Evaluation** reflects this, where faithfulness is high (accurate statement), but relevance is low.  
 
