@@ -190,6 +190,76 @@ The AI system is assessed based on the following key metrics:
   - **Financial Data Consistency** – Ensures accuracy in reported figures such as revenue, profit margins, and other financial metrics.
   - **Linguistic and Contextual Accuracy** – Assesses the coherence, readability, and appropriateness of the response in the given financial context.
 
+
+---
+
+<div align="center">
+
+# Interactive Product Demo: Gradio UI for Earnings Calls  
+
+### AI-Powered Insights for Earnings Transcripts  
+
+<img src="images/Gradio_UI_Intro.png" alt="Gradio UI Intro" style="width:80%; height:auto;">
+
+</div>
+
+---
+
+## Gradio Interface Overview
+This project features an **interactive Gradio-based user interface**, enabling users to efficiently query and analyze earnings call transcripts. The interface provides an intuitive way for financial analysts and researchers to extract insights from earnings calls in real time.
+
+---
+
+## Product Demo Walkthrough
+
+### 1. **Launching the Gradio Interface**
+- The landing page provides a user-friendly input field for querying earnings call transcripts.
+- Users can enter questions in **natural language** to retrieve insights.
+
+<img src="images/Gradio_UI_Landing.png" alt="Gradio UI Landing Page" style="width:80%; height:auto;">
+
+---
+
+### 2. **Entering a Query**
+- Users type a question related to an earnings call, such as *"What did the CEO say about revenue growth?"*
+- The system processes the request and retrieves relevant information.
+
+<img src="images/Gradio_UI_Query.png" alt="Gradio Query Example" style="width:80%; height:auto;">
+
+---
+
+### 3. **Processing and Generating Results**
+- The AI-powered system searches through the earnings call transcript database.
+- Relevant excerpts from the transcript are displayed to answer the user’s query.
+
+<img src="images/Gradio_UI_Response.png" alt="Gradio Response Example" style="width:80%; height:auto;">
+
+---
+
+### 4. **Follow-up Queries and Context Retention**
+- Users can refine their search by asking follow-up questions.
+- The system maintains context and provides updated responses based on the previous query.
+
+<img src="images/Gradio_UI_Followup.png" alt="Gradio Follow-up Query" style="width:80%; height:auto;">
+
+---
+
+### 5. **Insights and Summarization (Optional)**
+- If the system supports **summarization**, key takeaways from the earnings call can be displayed.
+- This feature helps users quickly grasp the most critical information.
+
+<img src="images/Gradio_UI_Summary.png" alt="Gradio Summary Example" style="width:80%; height:auto;">
+
+---
+
+## Key Features of the Gradio UI
+- **User-Friendly Interface** – Simple, intuitive design for easy navigation.  
+- **Natural Language Processing** – AI understands and responds to financial queries.  
+- **Fast and Efficient Retrieval** – Instant transcript search for relevant answers.  
+- **Context-Aware Responses** – Maintains the conversation history for follow-up questions.  
+- **Summarization and Insights** – Provides key takeaways for quicker analysis.  
+
+
 ---
 
 ## Future Enhancements
@@ -211,15 +281,6 @@ The system will continue evolving with improvements in several key areas:
 
 5. **Advanced NLP Models**
    - Leverage state-of-the-art natural language processing architectures to enhance contextual understanding, entity recognition, and sentiment analysis.
-
----
-
-## Visualizations
-
-### Gradio Interface:
-The project features an interactive **Gradio-based user interface**, allowing users to query earnings call transcripts efficiently.
-
-![Gradio UI](images/Gradio_UI_Intro.png)
 
 ---
 
