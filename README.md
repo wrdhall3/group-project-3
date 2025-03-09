@@ -193,94 +193,114 @@ The AI system is assessed based on the following key metrics:
 
 ---
 
+---
+
 <div align="center">
-
+   
 # Interactive Product Demo: Gradio UI for Earnings Calls  
-
 ### AI-Powered Insights for Earnings Transcripts  
-
-<img src="images/Gradio_UI_Intro.png" alt="Gradio UI Intro" style="width:80%; height:auto;">
 
 </div>
 
 ---
 
-## Gradio Interface Overview
-This project features an **interactive Gradio-based user interface**, enabling users to efficiently query and analyze earnings call transcripts. The interface provides an intuitive way for financial analysts and researchers to extract insights from earnings calls in real time.
+## Gradio Interface Overview  
+This project features an **interactive Gradio-based user interface**, enabling users to efficiently query and analyze earnings call transcripts. The interface provides an intuitive way for financial analysts and researchers to extract insights from earnings calls in real time.  
 
 ---
 
-## Product Demo Walkthrough
+## Product Demo Walkthrough  
 
-### 1. **Launching the Gradio Interface**
-- The landing page provides a user-friendly input field for querying earnings call transcripts.
-- Users can enter questions in **natural language** to retrieve insights.
+### 1. **Launching the Gradio Interface**  
+- The landing page provides a user-friendly input field for querying earnings call transcripts.  
+- Users can enter questions in **natural language** to retrieve insights.  
 
-<img src="images/Gradio_UI_Landing.png" alt="Gradio UI Landing Page" style="width:80%; height:auto;">
-
----
-
-### 2. **Entering a Query**
-- Users type a question related to an earnings call, such as *"What did the CEO say about revenue growth?"*
-- The system processes the request and retrieves relevant information.
-
-<img src="images/Gradio_UI_Query.png" alt="Gradio Query Example" style="width:80%; height:auto;">
+<img src="images/Gradio_UI_Intro.png" alt="Gradio UI Intro" style="width:80%; height:auto;">
 
 ---
 
-### 3. **Processing and Generating Results**
-- The AI-powered system searches through the earnings call transcript database.
-- Relevant excerpts from the transcript are displayed to answer the user’s query.
+### 2. **Entering a Query**  
+- Users **select the industry, company ticker, year, and quarter** before entering a question.  
+- In this example, the user asks: *"What did the CEO say about revenue growth?"*  
+- The system processes the request and retrieves relevant transcript sections.  
 
-<img src="images/Gradio_UI_Response.png" alt="Gradio Response Example" style="width:80%; height:auto;">
-
----
-
-### 4. **Follow-up Queries and Context Retention**
-- Users can refine their search by asking follow-up questions.
-- The system maintains context and provides updated responses based on the previous query.
-
-<img src="images/Gradio_UI_Followup.png" alt="Gradio Follow-up Query" style="width:80%; height:auto;">
+<img src="images/gradio_test1_a.png" alt="Gradio Query Example" style="width:80%; height:auto;">
 
 ---
 
-### 5. **Insights and Summarization (Optional)**
-- If the system supports **summarization**, key takeaways from the earnings call can be displayed.
-- This feature helps users quickly grasp the most critical information.
+### 3. **Processing and Generating Results**  
+- The AI-powered system searches the **earnings call transcript database** for relevant information.  
+- The **Analysis Result** provides a summary of the CEO’s statements on revenue growth.  
+- The **Transcript Extracts** section displays the exact text from the earnings call.  
 
-<img src="images/Gradio_UI_Summary.png" alt="Gradio Summary Example" style="width:80%; height:auto;">
+<img src="images/gradio_test1_b.png" alt="Gradio Response Example" style="width:80%; height:auto;">
 
 ---
 
-## Key Features of the Gradio UI
+### 4. **Quality Score Evaluation**  
+- The system assigns a **Quality Score** to evaluate the accuracy and relevance of the generated response.  
+- **Faithfulness Score** ensures the answer is accurately grounded in the transcript.  
+- **Relevance Score** measures how well the response aligns with the user’s query.  
+- The **Overall Quality Score** helps users assess response accuracy.  
+
+<img src="images/gradio_test1_c.png" alt="Gradio Quality Score Example" style="width:80%; height:auto;">
+
+---
+
+## Test Cases and Results  
+To evaluate the effectiveness of the model, we tested four key question types:  
+
+| **Question Type**   | **Actual Question**                            | **Results**                                                                 | **Human Assessment (Pass/Fail)** | **Tool's Quality Score** |
+|---------------------|-----------------------------------------------|-----------------------------------------------------------------------------|----------------------------------|--------------------------|
+| **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   |  Pass                          | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Qualitative**     | What did the CEO say about revenue growth?    | Provided a well-structured summary of the CEO’s discussion on revenue.      |  Pass                          | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Inference**       | What was the main reason for revenue growth?  | AI correctly inferred reasoning based on CEO statements and financial data. |  Pass                          | Faithfulness: 4, Relevance: 5, Overall: 4.5 |
+| **Off-Topic**       | What is the special for today?                | System responded that no relevant data exists in the document.              |  Fail (question unrelated)     | Faithfulness: 5, Relevance: 1, Overall: 3 |
+
+---
+
+### **Example: Off-Topic Question Failure**
+- In the case of an **off-topic query**, the system correctly determined that **no relevant information** was available in the transcript.  
+- However, it failed to **redirect the user** toward a meaningful response or clarification.  
+
+<img src="images/gradio_test2_a.png" alt="Off-Topic Query Example" style="width:80%; height:auto;">
+
+- The **Analysis Result** correctly stated that no information was found, but this **was not useful for the user**.  
+
+<img src="images/gradio_test2_b.png" alt="Off-Topic Analysis Result" style="width:80%; height:auto;">
+
+- The **Quality Score Evaluation** reflects this, where faithfulness is high (accurate statement), but relevance is low.  
+
+<img src="images/gradio_test2_c.png" alt="Off-Topic Quality Score" style="width:80%; height:auto;">
+
+---
+
+## Key Features of the Gradio UI  
 - **User-Friendly Interface** – Simple, intuitive design for easy navigation.  
 - **Natural Language Processing** – AI understands and responds to financial queries.  
 - **Fast and Efficient Retrieval** – Instant transcript search for relevant answers.  
 - **Context-Aware Responses** – Maintains the conversation history for follow-up questions.  
 - **Summarization and Insights** – Provides key takeaways for quicker analysis.  
+- **Response Evaluation** – Quality scores ensure high accuracy and relevance of generated responses.  
+
+---
 
 
 ---
 
-## Future Enhancements
+## Conclusion  
+The model demonstrates strong capabilities in retrieving relevant answers from earnings call transcripts and evaluating responses through a grading system. This ensures that users receive accurate, contextually appropriate answers. The **Gradio-based user interface** enhances this experience by providing an intuitive and efficient platform for querying financial transcripts. With its ability to process questions effectively and generate well-evaluated responses, the system proves to be a valuable tool for financial analysts and researchers seeking insights from corporate earnings calls.  
 
-The system will continue evolving with improvements in several key areas:
+---
 
-1. **User Feedback Loops**
-   - Implement a rating system for users to evaluate AI-generated responses.
-   - Use feedback to refine AI performance and improve accuracy over time.
+## Future Enhancements  
+The system is continuously evolving with planned improvements, including:  
 
-2. **Machine Learning Fine-Tuning**
-   - Further optimize the AI model to better understand financial terminology, market trends, and sector-specific nuances.
-
-3. **Multilingual Support**
-   - Expand support for multiple languages to enable analysis of earnings calls from international companies.
-
-4. **Real-Time Transcript Updates**
-   - Integrate automated transcript retrieval to ensure the latest earnings call data is always available for analysis.
-
-5. **Advanced NLP Models**
-   - Leverage state-of-the-art natural language processing architectures to enhance contextual understanding, entity recognition, and sentiment analysis.
+- **Multilingual Support** – Expanding the model to process and analyze transcripts in multiple languages.  
+- **Sentiment Analysis** – Implementing sentiment detection for executive statements to gauge market sentiment.  
+- **Real-Time Transcript Updates** – Automating transcript retrieval to ensure access to the latest earnings calls.  
+- **Advanced Search Capabilities** – Enhancing query understanding to support more complex financial questions.  
+- **Dashboard Integration** – Developing an interactive dashboard for deeper financial insights and data visualization.
 
 ---
 
