@@ -176,7 +176,7 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 ```mermaid
 graph TD;
     A[User Query] -->|Request Sent| B[API Fetch: Earnings Call Transcripts];
-    B -->|Retrieve Data Based on Parameters| C[Transcript Processing];
+    B -->|Retrieve Data| C[Transcript Processing];
     C -->|Split into 3000-character Chunks| D[Text Chunking];
     D -->|Generate Vector Representations| E[Create Embeddings with OpenAI];
     E -->|Store Embeddings and Metadata| F[Save to ChromaDB];
@@ -194,7 +194,7 @@ graph TD;
     classDef process fill:#f9f9f9,stroke:#333,stroke-width:1px;
     classDef database fill:#dfe6e9,stroke:#333,stroke-width:1px;
     classDef ai fill:#fdcb6e,stroke:#333,stroke-width:1px;
-    
+
     class A,A2,G,H,K,L process;
     class B,C,D,E,F database;
     class I,J ai;
