@@ -9,42 +9,89 @@
 
 ---
 
-## Project Description
-Insightful Consulting Group (ICG) is expanding into investment management and has been tasked with developing an AI prototype to streamline the analysis of earnings call transcripts. During earnings season, research analysts face an overwhelming influx of company earnings releases, making it difficult to extract valuable insights efficiently. This project enhances decision-making and productivity by enabling users to query earnings call transcripts and real-time AI-driven responses.
+## Project Description  
+Insightful Consulting Group (ICG) is expanding into investment management and is developing an AI-driven tool to enhance the analysis of earnings call transcripts. During earnings season, research analysts must sift through a vast number of company earnings releases, making it challenging to extract meaningful insights efficiently.  
+
+This project leverages a **Retrieval-Augmented Generation (RAG) model** to improve decision-making and productivity. Users can query pre-processed earnings call transcripts and receive AI-generated answers based on relevant retrieved excerpts. While the system does not process transcripts in real-time, it enables analysts to efficiently extract key information by retrieving the most relevant sections of stored transcript data and generating concise responses.
 
 ---
 
-## Dataset
-The dataset consists of **earnings call transcripts from 2024**, dynamically retrieved from **[API Ninja's Financial Transcript API](https://api-ninjas.com/)** and preprocessed for **natural language processing (NLP)**. Each transcript includes the following attributes:
+# Table of Contents  
 
+- [Project Description](#project-description)  
+- [Dataset](#dataset)  
+  - [Data Fields](#data-fields)  
+  - [Data Retrieval Process](#data-retrieval-process)  
+  - [Data Preprocessing](#data-preprocessing)  
+- [Code Structure](#code-structure)  
+- [Methodology](#methodology)  
+  - [What is Retrieval-Augmented Generation (RAG)?](#what-is-retrieval-augmented-generation-rag)  
+  - [System Workflow](#system-workflow)  
+- [Visual Representation of the Workflow](#visual-representation-of-the-workflow)  
+- [Model Optimization](#model-optimization)  
+- [Model Evaluation](#model-evaluation)  
+- [Gradio Interface Overview](#gradio-interface-overview)  
+- [Product Demo Walkthrough](#product-demo-walkthrough)  
+  - [Launching the Gradio Interface](#1-launching-the-gradio-interface)  
+  - [Entering a Query](#2-entering-a-query)  
+  - [Processing and Generating Results](#3-processing-and-generating-results)  
+  - [Quality Score Evaluation](#4-quality-score-evaluation)  
+- [Test Cases and Results](#test-cases-and-results)  
+  - [Key Adjustments](#key-adjustments)  
+  - [Example: Off-Topic Question Failure](#example-off-topic-question-failure)  
+- [Key Features of the Gradio UI](#key-features-of-the-gradio-ui)  
+- [Conclusion](#conclusion)  
+- [Future Enhancements](#future-enhancements)  
+- [License](#license)  
+
+---
+
+
+## Dataset  
+The dataset consists of **earnings call transcripts from 2024**, retrieved using the **[API Ninja Financial Transcript API](https://api-ninjas.com/)** and structured for efficient analysis. The system dynamically fetches transcripts based on industry, stock ticker symbol, fiscal year, and financial quarter. The retrieved data undergoes preprocessing to ensure consistency and usability for querying.
+
+### Data Fields  
+Each record in the dataset contains the following attributes:
+
+- **Ticker** – The stock ticker symbol that uniquely identifies the company.
 - **Industry** – The sector in which the company operates.
-- **Ticker Symbol** – The stock ticker uniquely identifies the company.
-- **Quarter** – The financial quarter in which the earnings call occurred (Q1, Q2, Q3, or Q4).
-- **Year** – The fiscal year corresponding to the earnings call.
-- **Transcript Text** – The full text of the earnings call, including statements made by executives and analysts.
-- **Date of Transcript** – The specific date when the earnings call occurred.
+- **Year** – The fiscal year of the earnings call.
+- **Quarter** – The financial quarter in which the earnings call took place (Q1, Q2, Q3, or Q4).
+- **Date** – The specific date of the earnings call (if available).
+- **Speaker** – The individual speaking during the call (e.g., CEO, CFO, Analyst).
+- **Transcript** – The spoken text from the earnings call, structured in a **[Speaker]: Text** format.
 
-This structured dataset allows efficient retrieval and analysis, enabling analysts to gain insights quickly and accurately.
+### Data Retrieval Process  
+Earnings call transcripts are fetched via **API requests** based on predefined company lists, fiscal quarters, and the target year. The system ensures robust API interaction through:
 
-### Data Source
-Earnings call transcripts are retrieved in real-time using **API Ninja**, a financial data provider offering access to company earnings transcripts. This integration enables the system to dynamically fetch the latest transcripts for informed decision-making.
+1. **Dynamic Querying**  
+   - Retrieves transcripts for multiple companies across various industries.  
+   - Supports batch API calls while adhering to rate limits.  
 
-### Data Preprocessing
-To enhance retrieval accuracy and optimize response generation, the AI system applies several preprocessing steps:
+2. **Rate-Limiting Protection**  
+   - Implements **delayed requests** to prevent API throttling.  
+   - Uses a progress bar to track retrieval status.  
 
-1. **API Data Extraction**
-   - API requests retrieve transcripts based on industry, company ticker, fiscal year, and financial quarter.
-   - The API response is parsed and converted into a structured format for efficient processing.
+3. **Secure API Key Handling**  
+   - Ensures secure API authentication via encrypted inputs.  
 
-2. **Text Cleaning & Standardization**
-   - Special characters, excessive whitespace, and formatting inconsistencies are removed.
-   - Speaker labels (e.g., "CEO", "Analyst") and interruptions are handled for readability.
+### Data Preprocessing  
+Once transcripts are retrieved, they undergo **cleaning and structuring** to optimize storage and readability:
 
-3. **Metadata Structuring**
-   - Industry classifications and company tickers are standardized.
-   - Date formats are normalized for consistency and accurate time-based analysis.
+1. **Text Consolidation**  
+   - Transcripts are grouped by **ticker, industry, year, quarter, and date**.  
+   - Speaker-attributed dialogue is formatted into structured text blocks for clarity.  
 
-These preprocessing steps ensure that earnings call transcripts are clean, structured, and ready for efficient analysis.
+2. **Standardization & Formatting**  
+   - Speaker labels are retained for context.  
+   - Whitespace and special characters are removed.  
+   - Date formats are normalized for consistency.  
+
+3. **Final Structuring**  
+   - The cleaned dataset is converted into a structured **CSV format** for further analysis.  
+
+This preprocessing pipeline ensures that the dataset is **clean, structured, and optimized** for downstream applications, such as natural language querying and financial research.
+
 
 ---
 
@@ -190,9 +237,6 @@ The AI system is assessed based on the following key metrics:
   - **Financial Data Consistency** – Ensures accuracy in reported figures such as revenue, profit margins, and other financial metrics.
   - **Linguistic and Contextual Accuracy** – Assesses the coherence, readability, and appropriateness of the response in the given financial context.
 
-
----
-
 ---
 
 <div align="center">
@@ -205,7 +249,7 @@ The AI system is assessed based on the following key metrics:
 ---
 
 ## Gradio Interface Overview  
-This project features an **interactive Gradio-based user interface**, enabling users to efficiently query and analyze earnings call transcripts. The interface provides an intuitive way for financial analysts and researchers to extract insights from earnings calls in real time.  
+This project features an **interactive Gradio-based user interface**, enabling users to efficiently query and analyze **pre-processed** earnings call transcripts. The interface provides an intuitive way for financial analysts and researchers to extract insights from stored earnings call data, ensuring quick and accurate responses based on retrieved transcript excerpts.  
 
 ---
 
@@ -291,18 +335,17 @@ To evaluate the effectiveness of the model, we tested five key question types:
 ## Key Features of the Gradio UI  
 - **User-Friendly Interface** – Simple, intuitive design for easy navigation.  
 - **Natural Language Processing** – AI understands and responds to financial queries.  
-- **Fast and Efficient Retrieval** – Instant transcript search for relevant answers.  
-- **Context-Aware Responses** – Maintains the conversation history for follow-up questions.  
-- **Summarization and Insights** – Provides key takeaways for quicker analysis.  
+- **Fast and Efficient Retrieval** – Instant transcript search for relevant answers.    
 - **Response Evaluation** – Quality scores ensure high accuracy and relevance of generated responses.  
-
----
 
 
 ---
 
 ## Conclusion  
-The model demonstrates strong capabilities in retrieving relevant answers from earnings call transcripts and evaluating responses through a grading system. This ensures that users receive accurate, contextually appropriate answers. The **Gradio-based user interface** enhances this experience by providing an intuitive and efficient platform for querying financial transcripts. With its ability to process questions effectively and generate well-evaluated responses, the system proves to be a valuable tool for financial analysts and researchers seeking insights from corporate earnings calls.  
+
+The **Earnings Call Transcript Analyzer** successfully demonstrated the capabilities of a **Retrieval-Augmented Generation (RAG) model** in extracting insights from earnings call transcripts. Through rigorous testing, the model proved effective in retrieving and generating relevant responses for financial analysts, with strong performance in factual and qualitative queries. **Key strengths** included accurate retrieval of earnings figures, CEO statements, and revenue growth discussions, ensuring faithfulness to the original transcript content.  
+
+However, the evaluation process also revealed **areas for improvement**. The system initially struggled with **context-sensitive queries**, such as differentiating between financial quarters, and assigned **inaccurate relevance scores for off-topic questions**. To address these issues, we refined the **model prompt** to ensure off-topic questions receive appropriately low relevance scores and adjusted other query evaluations to prevent misclassification. Additionally, **tweaking the chunking strategy** significantly improved both response accuracy and quality. These optimizations enhanced **temporal awareness**, **query disambiguation**, and **handling of irrelevant queries**.  
 
 ---
 
@@ -316,6 +359,8 @@ The system is continuously evolving with planned improvements, including:
 - **Dashboard Integration** – Developing an interactive dashboard for deeper financial insights and data visualization.
 
 ---
+
+[Back to Top](#table-of-contents)
 
 ## License
 
