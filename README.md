@@ -177,12 +177,11 @@ RAG enhances AI-generated responses by first retrieving relevant text from a dat
 graph TD;
     A[User Query] -->|Request Sent| B[API Fetch: Earnings Call Transcripts];
     B -->|Retrieve Data Based on Parameters| C[Transcript Processing];
-
     C -->|Split into 3000-character Chunks| D[Text Chunking];
     D -->|Generate Vector Representations| E[Create Embeddings with OpenAI];
     E -->|Store Embeddings and Metadata| F[Save to ChromaDB];
 
-    A -->|Convert Query to Embedding| G[Query Matching];
+    A2[User Query Embedding] -->|Convert Query to Embedding| G[Query Matching];
     G -->|Retrieve Relevant Chunks| H[Search in ChromaDB];
 
     H -->|Send to AI Model| I[LLM Processing with GPT-4];
@@ -191,15 +190,16 @@ graph TD;
     J -->|Evaluate Faithfulness and Relevance| K[LLM Review with GPT-4 Turbo];
     K -->|Deliver AI Response| L[Final Answer to User];
 
-
     %% Styling Enhancements
     classDef process fill:#f9f9f9,stroke:#333,stroke-width:1px;
     classDef database fill:#dfe6e9,stroke:#333,stroke-width:1px;
     classDef ai fill:#fdcb6e,stroke:#333,stroke-width:1px;
-    class A,G,H,K,L process;
+    
+    class A,A2,G,H,K,L process;
     class B,C,D,E,F database;
     class I,J ai;
 ```
+
 
 
 ## Model Optimization
@@ -296,7 +296,7 @@ To evaluate the effectiveness of the model, we tested five key question types:
 
 | **Question Type**   | **Actual Question**                            | **Results**                                                                 | **Human Assessment (Pass/Fail)** | **Tool's Quality Score** |
 |---------------------|-----------------------------------------------|-----------------------------------------------------------------------------|----------------------------------|--------------------------|
-| **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
+| **Quantitative**    | What was the company's total revenue?         | System retrieved relevant financial figures from the earnings transcript.   | Partial Pass                             | Faithfulness: 4, Relevance: 2, Overall: 3 |
 | **Quantitative**    | How did the company perform last quarter?     | Model returned the latest financial report instead of the previous quarter, failing to distinguish between periods. | Fail                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
 | **Quantitative**    | How did the company perform this quarter?     | Model correctly retrieved the latest financial report.                      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
 | **Qualitative**     | What did the CEO say about revenue growth?    | Provided a well-structured summary of the CEO’s discussion on revenue.      | Pass                             | Faithfulness: 5, Relevance: 5, Overall: 5 |
