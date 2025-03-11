@@ -9,8 +9,6 @@
 
 ---
 
----
-
 ## Project Description  
 Insightful Consulting Group (ICG) is expanding into investment management and is developing an AI-driven tool to enhance the analysis of earnings call transcripts. During earnings season, research analysts must sift through a vast number of company earnings releases, making it challenging to extract meaningful insights efficiently.  
 
