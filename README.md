@@ -3,9 +3,37 @@
 # Earnings Call Transcript Analyzer  
 ### AI-Powered Insights for Earnings Transcripts  
 
-<img src="images/rag_llm_integration.png" alt="RAG LLM Integration" style="width:80%; height:auto;">
-
 </div>
+
+```mermaid
+graph LR;
+    %% User Query Processing
+    A[User Query] -->|Convert to Embedding| B[Query Vectorization];
+    B -->|Find Most Relevant Chunks| C[Vector Search in ChromaDB];
+    C -->|Retrieve Matching Transcripts| D[Retrieve Relevant Text from ChromaDB];
+
+    %% Transcript Retrieval and Storage
+    subgraph Transcript Processing
+        F1[API Ninja Fetches Earnings Transcripts] -->|Process & Store Transcripts| F2[Transcript Storage];
+        F2 -->|Split into 3,000-character Chunks| F3[Text Chunking];
+        F3 -->|Generate Vector Representations| F4[Create Embeddings with OpenAI];
+        F4 -->|Store in ChromaDB| F5[Embedding Storage];
+    end
+
+    %% Response Generation and Evaluation
+    D -->|Provide Contextual Information| G[LLM Processing with GPT-4];
+    G -->|Generate AI Response| H[AI Response Generation];
+    H -->|Evaluate Faithfulness & Relevance| I[LLM Review with GPT-4 Turbo];
+    I -->|Deliver Final Response| J[Final Answer to User];
+
+    %% Styling Enhancements
+    classDef process fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef retrieval fill:#dfe6e9,stroke:#333,stroke-width:1px;
+    classDef ai fill:#fdcb6e,stroke:#333,stroke-width:1px;
+    class A,B,C,D,J process;
+    class F1,F2,F3,F4,F5 retrieval;
+    class G,H,I ai;
+
 
 ---
 
